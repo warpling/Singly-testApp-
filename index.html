@@ -1,14 +1,14 @@
 <html>
 <head>
-	<style type="text/css">
-	.imgBox {
-		float: 		left;
-		position: relative;
-		width: 		100px;
-		height:		100px;
-	}
-	</style>
-	
+    <style type="text/css">
+    .imgBox {
+        float:         left;
+        position: relative;
+        width:         100px;
+        height:        100px;
+    }
+    </style>
+    
   <style>
   img {
     /* upside down! */
@@ -20,45 +20,55 @@
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
   <script src="https://singly.com/js/api.js" type="text/javascript"></script>
-  <script type="text/javascript">
+  <script type="text/javascript">  
     $(function() {
+       
+      var generateAngle = function() {
+         var degrees = 4 + (Math.floor(Math.random()*7));
+         
+         // randomly flip it left or right
+         return (Math.floor(Math.random() * 2) == 1) ? degrees : -1 * degrees; 
+      }
+       
       var client = new APIClient();
       // get some photos
-      client.getJSON('/Me/photos', {limit: 100}, function(photos) {
+      client.getJSON('/Me/photos', {limit: 20}, function(photos) {
         console.log('found ' + photos.length + ' photos');
         // add them to the DOM
         for(var i in photos) {
           console.log('photo #' + i, photos[i]);
           $('body').append('<div class="imgBox"> <img src="' + photos[i].url + '"></div>');
         }
-		
-		$("imgBox").mouseover(function() {
-			var box = $(this);
-				box.css("z-index", "5000");
-			var img = $(this).find("img");
-		    img.css("max-width", "125px");
-		    img.css("max-height", "125px");
-		    img.css("-moz-box-shadow", "0 0 1em grey");
-		   	img.css("-webkit-box-shadow", "0 0 1em grey");
-		    img.css("box-shadow", "0 0 1em grey");
-				img.css("-webkit-transform", "rotate(6deg)");
-				img.css("-moz-transform", "rotate(6deg)");
-				
-		})
-		
-		$("imgBox").mouseout(function() {
-			var box = $(this);
-				box.css("z-index", "0");
-			var img = $(this).find("img");
-			img.css("-webkit-transform", "rotate(0deg)");
-			img.css("-moz-transform", "rotate(0deg)");
-		  img.css("max-width", "100px");
-		  img.css("max-height", "100px");
-		  img.css("-moz-box-shadow", "0 0 0 grey");
-		  img.css("-webkit-box-shadow", "0 0 0 grey");
-		  img.css("box-shadow", "0 0 0 grey");
-			
-		})
+        
+        $(".imgBox").mouseover(function() {
+            var box = $(this);
+            box.css("z-index", "5000");
+            
+            var img = box.find("img");
+            img.css("max-width", "125px");
+            img.css("max-height", "125px");
+            img.css("-moz-box-shadow", "0 0 1em grey");
+            img.css("-webkit-box-shadow", "0 0 1em grey");
+            img.css("box-shadow", "0 0 1em grey");
+            var rotationDegrees = generateAngle();
+            img.css("-webkit-transform", "rotate("+rotationDegrees.toString()+"deg)");
+            img.css("-moz-transform", "rotate("+rotationDegrees.toString()+"deg)");
+                
+        })
+        
+        $(".imgBox").mouseout(function() {
+            var box = $(this);
+             box.css("z-index", "0");
+             
+            var img = box.find("img");
+            img.css("-webkit-transform", "rotate(0deg)");
+            img.css("-moz-transform", "rotate(0deg)");
+            img.css("max-width", "100px");
+            img.css("max-height", "100px");
+            img.css("-moz-box-shadow", "0 0 0 grey");
+            img.css("-webkit-box-shadow", "0 0 0 grey");
+            img.css("box-shadow", "0 0 0 grey");
+        })
       });
     });
   </script>
